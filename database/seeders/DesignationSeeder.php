@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Designation;
 use Illuminate\Database\Seeder;
 
 class DesignationSeeder extends Seeder
@@ -13,6 +14,8 @@ class DesignationSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Designation::insert([
+            
+        ]);
     }
 }
