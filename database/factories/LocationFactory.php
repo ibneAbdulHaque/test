@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Locaction;
+use App\Models\Location;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class LocactionFactory extends Factory
+class LocationFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Locaction::class;
+    protected $model = Location::class;
 
     /**
      * Define the model's default state.
