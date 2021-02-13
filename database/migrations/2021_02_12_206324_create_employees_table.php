@@ -18,7 +18,7 @@ class CreateEmployeesTable extends Migration
             $table->string('name');
             $table->string('user_name')->unique();
             $table->string('email')->unique();
-            $table->string('mobile');
+            $table->string('mobile')->unique();
             $table->string('avatar')->nullable();
             $table->unsignedBigInteger('designation_id');
             $table->foreign('designation_id')->references('id')->on('designations');
