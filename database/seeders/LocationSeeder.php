@@ -570,13 +570,8 @@ class LocationSeeder extends Seeder
      *
      * @return void
      */
-<<<<<<< HEAD
-    public function run()
-    {
-        
-=======
     public function run(){
         Location::insert($this->locations);
->>>>>>> ed5eddbcbbdfe4c5a8241fff87c61eae9d7f8665
     }
 }
+

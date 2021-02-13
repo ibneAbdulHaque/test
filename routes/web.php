@@ -21,5 +21,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/profile', 'HomeController@profile')->name('profile');
-Route::get('/employee', 'EmployeeController@index')->name('employee');
+
+Route::group(['prefix' => 'employee', 'as' => 'employee.'], function ()
+{
+    Route::get('/', 'EmployeeController@index')->name('index');
+    Route::post('/upazila-list', 'EmployeeController@upazilaList')->name('upazila.list');
+    Route::post('/store', 'EmployeeController@store')->name('store');
+});
 

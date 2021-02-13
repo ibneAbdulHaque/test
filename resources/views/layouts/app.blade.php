@@ -39,7 +39,7 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('employee') }}">Add Employee</a>
+                            <a class="nav-link" href="{{ route('employee.index') }}">Add Employee</a>
                         </li>
                         @guest
                             @if (Route::has('login'))
@@ -84,6 +84,9 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script>
+        let _token = "{{ csrf_token() }}";
+    </script>
     @stack('script')
 </body>
 </html>
