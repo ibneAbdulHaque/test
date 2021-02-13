@@ -6,10 +6,12 @@ use App\Http\Requests\EmployeeFormRequest;
 use App\Models\Designation;
 use App\Models\Employee;
 use App\Models\Location;
+use App\Traits\Uploadable;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
+    use Uploadable;
     public function index()
     {
         $data['designations'] = Designation::all();
@@ -20,7 +22,13 @@ class EmployeeController extends Controller
     public function store(EmployeeFormRequest $request)
     {
         $data = $request->validated();
-        $result = Employee::updateOrInsert(['id' => $request->update_id], $data);
+        $collection = collect($data)->except('avatar');
+        if ($request->file('avatar')) {
+            $avatar = $this->upload_file($request->file('avatar'));
+            $collection = $collection->merge(compact('avatar'));
+        }
+
+        $result = Employee::updateOrCreate(['id' => $request->update_id], $collection->all());
         if ($result) {
             $output = ['status' => 'success', 'message' => 'Data Has been Saved Successfully..'];
         }else{
