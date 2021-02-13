@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Employee;
+use App\Rules\ValidMobileNumber;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -36,11 +37,12 @@ class EmployeeFormRequest extends FormRequest
     public function rules()
     {
         $rules = Employee::VALIDATION_RULES;
-        // if (request()->update_id) {
-        //     // $rules['user_name'][2] = 'unique:employees, user_name, '.request()->update_id;
-        //     // $rules['email'][2] = 'unique:employees,email, '.request()->update_id;
-        //     // $rules['mobile'][2] = 'unique:employees,mobile, '.request()->update_id; 
-        // }
+        if (request()->update_id) {
+            $rules['user_name'][2] = 'unique:employees, user_name, '.request()->update_id;
+            $rules['email'][2] = 'unique:employees,email, '.request()->update_id;
+            $rules['mobile'][2] = 'unique:employees,mobile, '.request()->update_id; 
+        }
+        $rules['mobile'][3] = new ValidMobileNumber;
         return $rules;
         
     }
