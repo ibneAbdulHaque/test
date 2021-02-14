@@ -1,7 +1,10 @@
 @extends('layouts.app')
 @push('style')
+    <link rel="stylesheet" href="{{ asset('css/datatable.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="{{ asset('css/dropify.min.css') }}">
+
+    <script src="https://kit.fontawesome.com/4623bd79b6.js" crossorigin="anonymous"></script>
     <style>
         .required label:first-child::after{
             content: ' *';
@@ -32,11 +35,12 @@
                     @endif
                     <div class="row">
                         <div class="col-md-12">
-                            <table class="table table-hover">
+                            <table class="table table-hover" id="dataTable">
                                 <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>Name</th>
+                                        <th>Avatar</th>
                                         <th>User Name</th>
                                         <th>Email</th>
                                         <th>Mobile</th>
@@ -45,27 +49,12 @@
                                         <th>District</th>
                                         <th>Upazila</th>
                                         <th>Postal Code</th>
-                                        <th>Verified Email</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Hasan</td>
-                                        <td>Hasan234</td>
-                                        <td>Hasan@gmail.com</td>
-                                        <td>01516112076</td>
-                                        <td>MD</td>
-                                        <td>Mirpur</td>
-                                        <td>Kurigram</td>
-                                        <td>Ulipur</td>
-                                        <td>5620</td>
-                                        <td>Yes</td>
-                                        <td>Actuve</td>
-                                        <td><a href="#" class="btn btn-primary">Update</a></td>
-                                    </tr>
+
                                 </tbody>
                             </table>        
                         </div>
@@ -80,9 +69,41 @@
 @endsection
 
 @push('script')
+    <script src="{{ asset('js/datatable.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{{ asset('js/dropify.min.js') }}"></script>
     <script>
+        var table;
+        $(document).ready(function (){
+            table = $('#dataTable').DataTable({
+                "processing": true, //Feature control the processing indicator
+                "serverSide": true, //Feature control DataTable server side processing mode
+                "order": [], //Initial no order
+                "responsive": true, //Make table responsive in mobile device
+                "bInfo": true, //TO show the total number of data
+                "bFilter": false, //For datatable default search box show/hide
+                "lengthMenu": [
+                    [5, 10, 15, 25, 50, 100, 500, 1000, 10000, -1],
+                    [5, 10, 15, 25, 50, 100, 500, 1000, 10000, "All"]
+                ],
+                "pageLength": 5, //number of data show per page
+                "language": {
+                    processing: `<img src="{{asset('svg/table-loading.svg')}}" alt="Loading...."/>`,
+                    emptyTable: '<strong class="text-danger">No Data Found</strong>',
+                    infoEmpty: '',
+                    zeroRecords: '<strong class="text-danger">No Data Found</strong>'
+                },
+                "ajax": {
+                    "url": "{{route('employee.list')}}",
+                    "type": "POST",
+                    "data": function (data) {
+                        data._token = _token;
+                    }
+                },
+            });
+
+        });
+
         $('.dropify').dropify();
         function upazilaList(district_id){
             // alert(district_id);

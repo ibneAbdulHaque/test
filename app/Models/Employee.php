@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Designation;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Employee extends Model
 {
@@ -32,4 +33,78 @@ class Employee extends Model
         'upazila_id',
         'postal_code',
     ];
+
+    public function designation()
+    {
+        return $this->belongsTo(Designation::class);
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(Location::class, 'district_id', 'id');
+    }
+    public function upazila()
+    {
+        return $this->belongsTo(Location::class, 'upazila_id', 'id');
+    }
+
+    private $order = array('employees.id' => 'desc');
+    private $column_order;
+
+    
+    private $orderValue;
+    private $dirValue;
+    private $startVlaue;
+    private $lengthVlaue;
+
+    public function setOrderValue($orderValue)
+    {
+        $this->orderValue = $orderValue;
+    }
+    public function setDirValue($dirValue)
+    {
+        $this->dirValue = $dirValue;
+    }
+    public function setStartValue($startVlaue)
+    {
+        $this->startVlaue = $startVlaue;
+    }
+    public function setLengthValue($lengthVlaue)
+    {
+        $this->lengthVlaue = $lengthVlaue;
+    }
+
+    private function get_datatable_query()
+    {
+        $query = self::with(['designation:id,designation_name', 'district:id,location_name', 'upazila:id,location_name']);
+        return $query;
+    }
+
+    public function getList()
+    {
+        $query = $this->get_datatable_query();
+        if ($this->lengthVlaue != -1) {
+            $query->offset($this->startVlaue)->limit($this->lengthVlaue);
+        }
+        return $query->get();
+    }
+
+    public function count_filtered()
+    {
+        $query = $this->get_datatable_query();
+        return $query->get()->count();
+    }
+
+    public function count_all()
+    {
+        return self::toBase()->get()->count();
+    }
+
+
+
+
+
+
+
+
 }

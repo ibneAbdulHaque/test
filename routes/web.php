@@ -27,5 +27,6 @@ Route::group(['prefix' => 'employee', 'as' => 'employee.'], function ()
     Route::get('/', 'EmployeeController@index')->name('index');
     Route::post('/upazila-list', 'EmployeeController@upazilaList')->name('upazila.list');
     Route::post('/store', 'EmployeeController@store')->name('store');
+    Route::post('/list', 'EmployeeController@employee_list')->name('list');
 });
 
